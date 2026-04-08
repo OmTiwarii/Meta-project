@@ -111,32 +111,35 @@ def is_duplicate(report_text: str, existing_issue_text: str) -> bool:
 
 def run_baseline_agent():
     """
-    Upgraded inference agent acting sequentially to maximize reward while strictly adhering to penalties & logic limits.
+    Upgraded inference agent acting sequentially to maximize reward while
+    emitting required [START]/[STEP]/[END] structured output blocks for
+    OpenEnv Phase 2 validation.
     """
     env = BugTriagerEnv()
     state = env.reset()
     total_reward = 0.0
-    
-    print("====== AI BUG REPORT TRIAGER - INFERENCE EXPERIMENT ======")
-    print(f"Title: {state['report']['title']}")
-    print(f"Body: {state['report']['body']}")
-    print("----------------------------------------------------------")
-    
+    step_count = 0
+
+    task_name = "bug_triage"
+
+    # ── REQUIRED: Signal start of task ────────────────────────────────────────
+    print(f"[START] task={task_name}", flush=True)
+
     def take_action(action_dict):
-        nonlocal state, total_reward, env
-        print(f">> Executing Action: {action_dict}")
+        nonlocal state, total_reward, env, step_count
+        step_count += 1
         new_state, reward, done, info = env.step(action_dict)
-        print(f"   [Reward gained: {reward:+.2f}] Info: {info}")
         total_reward += reward
         state = new_state
+        # ── REQUIRED: Emit a step line per action ──────────────────────────────
+        print(f"[STEP] step={step_count} reward={reward:.2f} action={action_dict.get('action','?')}", flush=True)
         return done
 
-    # 1. Request Info (if vague or small description payload)
+    # ── Triage logic ──────────────────────────────────────────────────────────
     body = state["report"]["body"].lower()
-    if len(body.split()) < 30: 
+    if len(body.split()) < 30:
         take_action({"action": "request_info", "fields": ["steps_to_reproduce", "device"]})
-        
-    # Re-evaluate text with newly injected contextual insights
+
     report_data = state["report"]
     full_text = report_data["title"] + " " + report_data["body"]
     if "steps_to_reproduce" in report_data:
@@ -144,8 +147,8 @@ def run_baseline_agent():
     if "device" in report_data:
         full_text += " " + report_data["device"]
     full_text = full_text.lower()
-        
-    # 2. Classify severity systematically
+
+    # Severity
     if "crash" in full_text or "timeout" in full_text or "504" in full_text or "401" in full_text:
         take_action({"action": "set_severity", "value": "critical"})
     elif "broken" in full_text or "500" in full_text or "unauthorized" in full_text:
@@ -154,8 +157,8 @@ def run_baseline_agent():
         take_action({"action": "set_severity", "value": "low"})
     else:
         take_action({"action": "set_severity", "value": "medium"})
-        
-    # 3. Classify component strategically
+
+    # Component
     if "payment" in full_text or "checkout" in full_text or "stripe" in full_text:
         take_action({"action": "set_component", "value": "payments"})
     elif "log in" in full_text or "login" in full_text or "password" in full_text:
@@ -166,39 +169,32 @@ def run_baseline_agent():
         take_action({"action": "set_component", "value": "ui"})
     else:
         take_action({"action": "set_component", "value": "backend"})
-        
-    # 4. Flag Duplicate via advanced Jaccard text overlap checking against historical database
+
+    # Duplicate detection
     for issue in state["existing_issues"]:
         issue_text = issue["title"] + " " + issue.get("body", "")
         if is_duplicate(full_text, issue_text):
             take_action({"action": "flag_duplicate", "duplicate_of": issue["id"]})
             break
-            
-    # 5. Assign an engineer systematically (baseline assignment logic)
-    take_action({"action": "assign", "assignee": "alice"})  
 
-    # 6. Submit finalized action sequence
-    done = take_action({"action": "submit"})
-    
-    print("\n====== TRIAGE COMPLETED ======")
-    print("Final State Progress Context:")
-    print(json.dumps(state["current_progress"], indent=2))
-    
+    # Assign
+    take_action({"action": "assign", "assignee": "alice"})
+
+    # Submit
+    take_action({"action": "submit"})
+
+    # Grade final result
     from grader import grade
     actual_gold = env.current_scenario["gold"]
     grader_output = grade(state["current_progress"], actual_gold, debug=True)
-    
-    print("\nGold Standard Context Map:")
-    print(json.dumps(actual_gold, indent=2))
-    print(f"\nFinal Grader Breakdown Validations: {grader_output['breakdown']}")
-    print(f"Total Cumulative Environment Score / Reward: {total_reward:+.2f}")
-    
-    if grader_output['score'] >= 1.0:
-        print("Agent baseline evaluation successfully matched the target constraints!")
-    else:
-        print("Agent requires further fine-tuning to perfectly match standard weights.")
-        
+    final_score = grader_output["score"]
+
+    # ── REQUIRED: Signal end of task ──────────────────────────────────────────
+    print(f"[END] task={task_name} score={final_score:.2f} steps={step_count}", flush=True)
+
     return total_reward
+
 
 if __name__ == "__main__":
     run_baseline_agent()
+
