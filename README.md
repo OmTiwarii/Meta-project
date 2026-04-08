@@ -1,3 +1,12 @@
+---
+title: BugPilot
+emoji: 🐛
+colorFrom: red
+colorTo: blue
+sdk: docker
+pinned: false
+---
+
 # AI Bug Report Triager Environment
 
 This project provides a production-ready OpenEnv-compatible simulation environment where an Artificial Intelligence Agent acts as a primary software triage engineer. 
