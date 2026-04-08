@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "ai-bug-report-triager"
+version = "1.0.0"
+description = "AI Bug Report Triager Environment — OpenEnv compatible RL simulation"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "pydantic>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://huggingface.co/spaces/Omtiwari553/BugPilot"
+Repository = "https://github.com/OmTiwarii/Meta-project"
+
+[tool.openenv]
+entry_point = "environment:BugTriagerEnv"
+api_base_url = "http://0.0.0.0:7860"
+reset_endpoint = "/reset"
+step_endpoint = "/step"
+inference_script = "inference.py"
