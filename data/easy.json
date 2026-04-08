@@ -1,0 +1,41 @@
+[
+  {
+    "report": {
+      "title": "Login button on homepage is broken",
+      "body": "When I click the login button, nothing happens. It just stays on the same page.",
+      "reporter_history": []
+    },
+    "gold": {
+      "severity": "high",
+      "component": "ui",
+      "duplicate_of": null,
+      "assignee": "alice"
+    }
+  },
+  {
+    "report": {
+      "title": "Payment gateway timeout",
+      "body": "Credit card processing fails with a 504 timeout error.",
+      "reporter_history": ["Reported similar issue last week"]
+    },
+    "gold": {
+      "severity": "critical",
+      "component": "payments",
+      "duplicate_of": null,
+      "assignee": "bob"
+    }
+  },
+  {
+    "report": {
+      "title": "Typo in terms of service",
+      "body": "Missing an 's' on line 42 of the ToS.",
+      "reporter_history": []
+    },
+    "gold": {
+      "severity": "low",
+      "component": "backend",
+      "duplicate_of": null,
+      "assignee": "charlie"
+    }
+  }
+]

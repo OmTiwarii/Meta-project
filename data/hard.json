@@ -1,0 +1,41 @@
+[
+  {
+    "report": {
+      "title": "Error 401 when using Stripe",
+      "body": "Every time I tap buy, it says unauthorized. Also the app runs very slow on my Pixel 6.",
+      "reporter_history": []
+    },
+    "gold": {
+      "severity": "critical",
+      "component": "payments",
+      "duplicate_of": "issue_102",
+      "assignee": "charlie"
+    }
+  },
+  {
+    "report": {
+      "title": "App crashes on start for Android 10",
+      "body": "Just updated my OS and now I can't even get past the splash screen.",
+      "reporter_history": []
+    },
+    "gold": {
+      "severity": "critical",
+      "component": "mobile",
+      "duplicate_of": "issue_101",
+      "assignee": "bob"
+    }
+  },
+  {
+    "report": {
+      "title": "White screen on dashboard",
+      "body": "Don't know what's going on... help! It worked yesterday. I use Chrome.",
+      "reporter_history": []
+    },
+    "gold": {
+      "severity": "medium",
+      "component": "ui",
+      "duplicate_of": null,
+      "assignee": "alice"
+    }
+  }
+]

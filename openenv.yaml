@@ -1,0 +1,16 @@
+environment:
+  name: "ai-bug-report-triager"
+  entrypoint: "environment:BugTriagerEnv"
+  type: "custom"
+
+api:
+  port: 8000
+  host: "0.0.0.0"
+  endpoints:
+    reset: "/reset"
+    step: "/step"
+    state: "/state"
+
+evaluation:
+  metric: "custom_grade"
+  max_steps: 10

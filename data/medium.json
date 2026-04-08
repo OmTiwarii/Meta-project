@@ -1,0 +1,41 @@
+[
+  {
+    "report": {
+      "title": "Nothing works anymore",
+      "body": "When I try to use the app, it throws an error code 500. Not sure what changed but I was trying to check my profile settings.",
+      "reporter_history": ["submitted 2 bugs before"]
+    },
+    "gold": {
+      "severity": "high",
+      "component": "backend",
+      "duplicate_of": null,
+      "assignee": "bob"
+    }
+  },
+  {
+    "report": {
+      "title": "Can't log in on my iPhone",
+      "body": "Password reset link sends me to a blank screen on Safari mobile.",
+      "reporter_history": []
+    },
+    "gold": {
+      "severity": "high",
+      "component": "auth",
+      "duplicate_of": null,
+      "assignee": "diana"
+    }
+  },
+  {
+    "report": {
+      "title": "Images not loading",
+      "body": "Avatars are broken in the feed. Shows broken image icon.",
+      "reporter_history": []
+    },
+    "gold": {
+      "severity": "medium",
+      "component": "ui",
+      "duplicate_of": "issue_103",
+      "assignee": "alice"
+    }
+  }
+]
