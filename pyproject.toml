@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 [project.scripts]
-server = "uvicorn api.main:app --host 0.0.0.0 --port 7860"
+server = "server.app:main"
 
 [project.urls]
 Homepage = "https://huggingface.co/spaces/Omtiwari553/BugPilot"
