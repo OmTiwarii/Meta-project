@@ -24,6 +24,21 @@ class ActionRequest(BaseModel):
     assignee: Optional[str] = None
     fields: Optional[List[str]] = None
 
+@app.get("/")
+def root():
+    """Root endpoint — welcome message and links."""
+    return {
+        "name": "AI Bug Report Triager API",
+        "status": "running",
+        "docs": "/docs",
+        "endpoints": {
+            "reset": "POST /reset",
+            "step": "POST /step",
+            "state": "GET /state",
+            "health": "GET /health"
+        }
+    }
+
 @app.post("/reset")
 def reset_env():
     """Resets the environment and loads a new scenario."""
