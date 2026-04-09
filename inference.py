@@ -159,7 +159,8 @@ def run_episode(env, task_name):
     from grader import grade
     actual_gold = env.current_scenario["gold"]
     grader_output = grade(state["current_progress"], actual_gold, debug=True)
-    final_score = grader_output["score"]
+    # Score must be strictly between 0 and 1 (not 0.0 and not 1.0)
+    final_score = max(0.01, min(0.99, grader_output["score"]))
 
     print("[END] task={} score={:.2f} steps={}".format(
         task_name, final_score, step_count
