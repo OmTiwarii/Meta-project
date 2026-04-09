@@ -2,6 +2,7 @@ from environment import BugTriagerEnv
 import json
 import re
 import os
+from typing import Optional
 
 # ─────────────────────────────────────────────────────────────────────────────
 # LLM PROXY CONFIGURATION (injected by hackathon validator)
@@ -71,7 +72,7 @@ def build_agent_prompt(state: dict, previous_reward: float = 0.0, session_score:
     )
 
 
-def call_llm(prompt: str) -> dict | None:
+def call_llm(prompt: str) -> Optional[dict]:
     """
     Call the LLM via the hackathon-provided proxy endpoint.
     Uses API_BASE_URL and API_KEY from environment variables.
